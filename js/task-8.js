@@ -55,6 +55,6 @@ function closeModal(evt) {
 // Закрытие модального окна по нажатию клавиши ESC
 function onPressEsc(evt) {
   if (evt.code === 'Escape') {
-    offContainerGalleryClick();
+    closeModal();
   }
 }
