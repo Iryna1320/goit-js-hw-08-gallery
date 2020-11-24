@@ -1,20 +1,21 @@
 import galleryList from './gallery-items.js';
 //console.log(galleryList)
 
-const galleryContainer = document.querySelector('.js-gallery')
-const modal = document.querySelector('.js-lightbox')
-const modalImg = document.querySelector('.lightbox__image')
-const closeBtnModal = document.querySelector('button[data-action="close-lightbox"]')
-const closeModalOverlay = document.querySelector('.lightbox__overlay')
+const galleryContainer = document.querySelector('.js-gallery');
+const modal = document.querySelector('.js-lightbox');
+const modalImg = document.querySelector('.lightbox__image');
+const closeBtnModal = document.querySelector(
+  'button[data-action="close-lightbox"]',
+);
+const closeModalOverlay = document.querySelector('.lightbox__overlay');
 
 const galleryItem = createGalleryItem(galleryList);
 
 galleryContainer.insertAdjacentHTML('beforeend', galleryItem);
 
-galleryContainer.addEventListener('click', onContainerGalleryClick)
-closeBtnModal.addEventListener('click', offContainerGalleryClick)
-closeModalOverlay.addEventListener('click', offModalOverlayClick)
-
+galleryContainer.addEventListener('click', onContainerGalleryClick);
+closeBtnModal.addEventListener('click', closeModal);
+closeModalOverlay.addEventListener('click', closeModal);
 
 //функция создания и рендер разметки по массиву данных и предоставленному шаблону
 function createGalleryItem(galleryList) {
@@ -26,42 +27,34 @@ function createGalleryItem(galleryList) {
   </a>
   </li>`;
     })
-    .join("");
+    .join('');
 }
 
 //функция открытия модального окна по клику на элементе галереи
 function onContainerGalleryClick(evt) {
   evt.preventDefault();
 
-  window.addEventListener('keydown', onPressEsc)
-
   if (!evt.target.classList.contains('gallery__image')) {
     return;
   }
 
+  window.addEventListener('keydown', onPressEsc);
   modal.classList.add('is-open');
   modalImg.src = evt.target.dataset.source;
 }
 
 //функция закрытия модалки с изображением нажатием на кнопку button[data-action="close-lightbox"]
-function offContainerGalleryClick(evt) {
-  window.removeEventListener('keydown', onPressEsc)
+//закрытие модального окна по клику на div.lightbox__overlay
+function closeModal(evt) {
+  window.removeEventListener('keydown', onPressEsc);
 
   modal.classList.remove('is-open');
   modalImg.src = '';
 }
 
-//функция закрытия модального окна по клику на div.lightbox__overlay
-function offModalOverlayClick(evt) {
-  window.removeEventListener('keydown', onPressEsc)
-
-   modal.classList.remove('is-open');
-  modalImg.src = '';
-}
-
 // Закрытие модального окна по нажатию клавиши ESC
-function onPressEsc(evt) {  
-    if (evt.code === 'Escape') {
-      offContainerGalleryClick();
-    }  
+function onPressEsc(evt) {
+  if (evt.code === 'Escape') {
+    offContainerGalleryClick();
+  }
 }
